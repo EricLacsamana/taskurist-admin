@@ -1,8 +1,7 @@
-import { ApexOptions } from 'apexcharts';
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const options: ApexOptions = {
+const options = {
   colors: ['#3C50E0', '#80CAEE'],
   chart: {
     fontFamily: 'Satoshi, sans-serif',
@@ -62,15 +61,8 @@ const options: ApexOptions = {
   },
 };
 
-interface ChartTwoState {
-  series: {
-    name: string;
-    data: number[];
-  }[];
-}
-
-const ChartTwo: React.FC = () => {
-  const [state, setState] = useState<ChartTwoState>({
+const ChartTwo = () => {
+  const [state, setState] = useState({
     series: [
       {
         name: 'Sales',

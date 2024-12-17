@@ -1,8 +1,7 @@
-import { ApexOptions } from 'apexcharts';
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const options: ApexOptions = {
+const options = {
   legend: {
     show: false,
     position: 'top',
@@ -115,15 +114,8 @@ const options: ApexOptions = {
   },
 };
 
-interface ChartOneState {
-  series: {
-    name: string;
-    data: number[];
-  }[];
-}
-
-const ChartOne: React.FC = () => {
-  const [state, setState] = useState<ChartOneState>({
+const ChartOne = () => {
+  const [state, setState] = useState({
     series: [
       {
         name: 'Product One',

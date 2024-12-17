@@ -1,15 +1,6 @@
 import React, { ReactNode } from 'react';
 
-interface CardDataStatsProps {
-  title: string;
-  total: string;
-  rate: string;
-  levelUp?: boolean;
-  levelDown?: boolean;
-  children: ReactNode;
-}
-
-const CardDataStats: React.FC<CardDataStatsProps> = ({
+const CardDataStats= ({
   title,
   total,
   rate,

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import dataJSON from '../../public/data.json';
 
-
-
 export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
-  const fields=Object.keys(Object.values(dataJSON)[0]).filter((item:any)=>!(item.startsWith("delta_")));
+  const fields=Object.keys(Object.values(dataJSON)[0]).filter((item)=>!(item.startsWith("delta_")));
   
   const [formState, setFormState] = useState(
     defaultValue || {
@@ -107,8 +105,8 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
                     onChange={handleChange}
                     value={formState.para}
                     >
-                      {fields.map((item:any,idx:number)=>(<option key={idx} value={item}>{item}</option>))}
-                    
+                      {fields.map((item, idx)=>(<option key={idx} value={item}>{item}</option>))}
+
                     </select>
                     <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">
                             <svg
@@ -220,8 +218,8 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
                     </div>
                 </div>
           </div>
-          {errors.filter((item:string)=>(item.startsWith("INVALID_ID"))).length>0 && <><br/><div className="error">{errors.filter((item:string)=>(item.startsWith("INVALID_ID")))[0].replace("INVALID_ID_","")} is not a valid bond</div></>}
-          {errors.filter((item:string)=>!(item.startsWith("INVALID_ID"))).length>0 && (<div className="error">Please input {errors.filter((item:string)=>!(item.startsWith("INVALID_ID"))).join(", ")}</div>)}
+          {errors.filter((item)=>(item.startsWith("INVALID_ID"))).length>0 && <><br/><div className="error">{errors.filter((item:string)=>(item.startsWith("INVALID_ID")))[0].replace("INVALID_ID_","")} is not a valid bond</div></>}
+          {errors.filter((item)=>!(item.startsWith("INVALID_ID"))).length>0 && (<div className="error">Please input {errors.filter((item:string)=>!(item.startsWith("INVALID_ID"))).join(", ")}</div>)}
           
           
           <br></br>

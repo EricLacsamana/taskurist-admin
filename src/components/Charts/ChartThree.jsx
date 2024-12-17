@@ -1,12 +1,8 @@
-import { ApexOptions } from 'apexcharts';
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-interface ChartThreeState {
-  series: number[];
-}
 
-const options: ApexOptions = {
+const options = {
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     type: 'donut',
@@ -49,8 +45,8 @@ const options: ApexOptions = {
   ],
 };
 
-const ChartThree: React.FC = () => {
-  const [state, setState] = useState<ChartThreeState>({
+const ChartThree = () => {
+  const [state, setState] = useState({
     series: [65, 34, 12, 56],
   });
 
