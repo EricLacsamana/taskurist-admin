@@ -5,21 +5,21 @@ import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
-import Calendar from './pages/Calendar';
-import Chart from './pages/Chart';
+// import Calendar from './pages/Calendar';
+// import Chart from './pages/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
-import FormElements from './pages/Form/FormElements';
-import FormLayout from './pages/Form/FormLayout';
-import Profile from './pages/Profile';
-import Settings from './pages/Settings';
-import Tables from './pages/Tables';
-import Alerts from './pages/UiElements/Alerts';
-import Buttons from './pages/UiElements/Buttons';
+// import FormElements from './pages/Form/FormElements';
+// import FormLayout from './pages/Form/FormLayout';
+// import Profile from './pages/Profile';
+// import Settings from './pages/Settings';
+// import Tables from './pages/Tables';
+// import Alerts from './pages/UiElements/Alerts';
+// import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
 import AuthenticatedLayout from './layout/AuthenticatedLayout';
 
 function App() {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -66,7 +66,7 @@ function App() {
             </>
           }
         />
-        <Route
+        {/* <Route
           path="/calendar"
           element={
             <>
@@ -146,7 +146,7 @@ function App() {
               <Buttons />
             </>
           }
-        />
+        /> */}
       </Route>
     </Routes>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-const DefaultLayout: React.FC = () => {
+const DefaultLayout = () => {
 
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">

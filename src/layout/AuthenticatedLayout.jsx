@@ -3,7 +3,7 @@ import Header from '../components/Header/index';
 import Sidebar from '../components/Sidebar/index';
 import { Outlet } from 'react-router-dom';
 
-const AuthenticatedLayout: React.FC = () => {
+const AuthenticatedLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
