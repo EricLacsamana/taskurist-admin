@@ -7,7 +7,7 @@ import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
-import ECommerce from './pages/Dashboard/ECommerce';
+import Dashboard from './pages/Dashboard';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
@@ -61,8 +61,8 @@ function App() {
           index
           element={
             <>
-              <PageTitle title="eCommerce Dashboard | Taskurist - Tailwind CSS Admin Dashboard Template" />
-              <ECommerce />
+              <PageTitle title="Dashboard | Taskurist - Tailwind CSS Admin Dashboard Template" />
+              <Dashboard />
             </>
           }
         />
