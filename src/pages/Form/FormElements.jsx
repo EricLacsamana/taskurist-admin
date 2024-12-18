@@ -11,7 +11,7 @@ import SwitcherTwo from '../../components/Switchers/SwitcherTwo';
 // import DatePickerOne from '../../components/Forms/DatePicker/DatePickerOne';
 // import DatePickerTwo from '../../components/Forms/DatePicker/DatePickerTwo';
 import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
-import MultiSelect from '../../components/Forms/MultiSelect';
+// import MultiSelect from '../../components/Forms/MultiSelect';
 
 const FormElements = () => {
   return (
@@ -193,7 +193,7 @@ const FormElements = () => {
             </div>
             <div className="flex flex-col gap-5.5 p-6.5">
               <SelectGroupTwo />
-              <MultiSelect id="multiSelect" />
+              {/* <MultiSelect id="multiSelect" /> */}
             </div>
           </div>
         </div>
