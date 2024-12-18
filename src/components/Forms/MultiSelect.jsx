@@ -1,28 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-interface Option {
-  value: string;
-  text: string;
-  selected: boolean;
-  element?: HTMLElement;
-}
-
-interface DropdownProps {
-  id: string;
-}
-
-const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
-  const [options, setOptions] = useState<Option[]>([]);
-  const [selected, setSelected] = useState<number[]>([]);
+const MultiSelect = ({ id }) => {
+  const [options, setOptions] = useState([]);
+  const [selected, setSelected] = useState([]);
   const [show, setShow] = useState(false);
-  const dropdownRef = useRef<any>(null);
-  const trigger = useRef<any>(null);
+  const dropdownRef = useRef(null);
+  const trigger = useRef(null);
 
   useEffect(() => {
     const loadOptions = () => {
-      const select = document.getElementById(id) as HTMLSelectElement | null;
+      const select = document.getElementById(id);
       if (select) {
-        const newOptions: Option[] = [];
+        const newOptions = [];
         for (let i = 0; i < select.options.length; i++) {
           newOptions.push({
             value: select.options[i].value,
@@ -45,12 +34,12 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
      return show === true;
    };
 
- const select = (index: number, event: React.MouseEvent) => {
+ const select = (index, event) => {
    const newOptions = [...options];
 
    if (!newOptions[index].selected) {
      newOptions[index].selected = true;
-     newOptions[index].element = event.currentTarget as HTMLElement;
+     newOptions[index].element = event.currentTarget;
      setSelected([...selected, index]);
    } else {
      const selectedIndex = selected.indexOf(index);
@@ -63,7 +52,7 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
    setOptions(newOptions);
  };
 
-  const remove = (index: number) => {
+  const remove = (index) => {
     const newOptions = [...options];
     const selectedIndex = selected.indexOf(index);
 
@@ -79,7 +68,7 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
   };
 
     useEffect(() => {
-      const clickHandler = ({ target }: MouseEvent) => {
+      const clickHandler = ({ target }) => {
         if (!dropdownRef.current) return;
         if (
           !show ||

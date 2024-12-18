@@ -4,7 +4,6 @@ import ChartOne from '../../components/Charts/ChartOne';
 import ChartThree from '../../components/Charts/ChartThree';
 import ChartTwo from '../../components/Charts/ChartTwo';
 import ChatCard from '../../components/Chat/ChatCard';
-import MapOne from '../../components/Maps/MapOne';
 import TableOne from '../../components/Tables/TableOne';
 
 const ECommerce = () => {
@@ -53,7 +52,7 @@ const ECommerce = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Product" total="2.450" rate="2.59%" levelUp>
+        <CardDataStats title="Total Assets" total="2.450" rate="2.59%" levelUp>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -101,7 +100,6 @@ const ECommerce = () => {
         <ChartOne />
         <ChartTwo />
         <ChartThree />
-        <MapOne />
         <div className="col-span-12 xl:col-span-8">
           <TableOne />
         </div>

@@ -1,6 +1,5 @@
-import jsVectorMap from 'jsvectormap';
-import 'jsvectormap/dist/css/jsvectormap.css';
 import { useEffect } from 'react';
+import jsVectorMap from 'jsvectormap';
 import '../../js/us-aea-en';
 
 const MapOne = () => {

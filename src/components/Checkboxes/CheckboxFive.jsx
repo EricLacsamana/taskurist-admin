@@ -1,31 +1,29 @@
 import { useState } from 'react';
 
-const CheckboxOne = () => {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+const CheckboxFive = () => {
+  const [isChecked, setIsChecked] = useState(false);
 
   return (
     <div>
       <label
-        htmlFor="checkboxLabelOne"
+        htmlFor="checkboxLabelFive"
         className="flex cursor-pointer select-none items-center"
       >
         <div className="relative">
           <input
             type="checkbox"
-            id="checkboxLabelOne"
+            id="checkboxLabelFive"
             className="sr-only"
             onChange={() => {
               setIsChecked(!isChecked);
             }}
           />
           <div
-            className={`mr-4 flex h-5 w-5 items-center justify-center rounded border ${
-              isChecked && 'border-primary bg-gray dark:bg-transparent'
+            className={`box mr-4 flex h-5 w-5 items-center justify-center rounded-full border border-primary ${
+              isChecked && '!border-4'
             }`}
           >
-            <span
-              className={`h-2.5 w-2.5 rounded-sm ${isChecked && 'bg-primary'}`}
-            ></span>
+            <span className="h-2.5 w-2.5 rounded-full bg-white dark:bg-transparent"></span>
           </div>
         </div>
         Checkbox Text
@@ -34,4 +32,4 @@ const CheckboxOne = () => {
   );
 };
 
-export default CheckboxOne;
+export default CheckboxFive;
