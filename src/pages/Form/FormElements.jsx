@@ -11,9 +11,16 @@ import SwitcherTwo from '../../components/Switchers/SwitcherTwo';
 // import DatePickerOne from '../../components/Forms/DatePicker/DatePickerOne';
 // import DatePickerTwo from '../../components/Forms/DatePicker/DatePickerTwo';
 import SelectGroupTwo from '../../components/Forms/SelectGroup/SelectGroupTwo';
+
+import { useState } from 'react';
+import { JobOrderModal } from '../../components/Modals/JobOrderModal';
+
 // import MultiSelect from '../../components/Forms/MultiSelect';
 
 const FormElements = () => {
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(!openModal);
   return (
     <>
       <Breadcrumb pageName="Form Elements" />
@@ -80,17 +87,22 @@ const FormElements = () => {
           </div>
 
           {/* <!-- Time and date --> */}
-          {/* <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Time and date
+                Job Order Form
               </h3>
             </div>
             <div className="flex flex-col gap-5.5 p-6.5">
-              <DatePickerOne />
-              <DatePickerTwo />
+                <button onClick={handleOpenModal} className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                  Open Modal
+                </button>
+              {/* <DatePickerOne />
+              <DatePickerTwo /> */}
+              <JobOrderModal isOpen={openModal} />
             </div>
-          </div> */}
+          </div>
+          
 
           {/* <!-- File upload --> */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
