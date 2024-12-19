@@ -151,6 +151,11 @@ const MultiSelect = ({ id = '' }) => {
                     <button
                       type="button"
                       onClick={open}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          open();
+                        }
+                      }}
                       aria-label="Toggle Dropdown"
                       aria-expanded={show ? 'true' : 'false'}
                       className="h-6 w-6 cursor-pointer outline-none focus:outline-none"
@@ -185,11 +190,19 @@ const MultiSelect = ({ id = '' }) => {
                   onBlur={() => setShow(false)}
                 >
                   <div className="flex w-full flex-col">
-                    {options.map((option) => (
+                  {options.map((option) => (
                       <div key={option.value}>
                         <div
                           className="w-full cursor-pointer rounded-t border-b border-stroke hover:bg-primary/5 dark:border-form-strokedark"
                           onClick={(event) => select(option.value, event)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              select(option.value, e);
+                            }
+                          }}
+                          role="option"
+                          tabIndex={0} // Make the option focusable
+                          aria-selected={option.selected ? 'true' : 'false'}
                         >
                           <div
                             className={`relative flex w-full items-center border-l-2 border-transparent p-2 pl-2 ${
@@ -197,9 +210,7 @@ const MultiSelect = ({ id = '' }) => {
                             }`}
                           >
                             <div className="flex w-full items-center">
-                              <div className="mx-2 leading-6">
-                                {option.text}
-                              </div>
+                              <div className="mx-2 leading-6">{option.text}</div>
                             </div>
                           </div>
                         </div>
