@@ -1,28 +1,19 @@
 import React, { useRef, useEffect } from 'react';
 
 const ClickOutside = ({
-  children,
-  exceptionRef,
-  onClick,
-  className,
+  children = null,
+  exceptionRef = undefined,
+  onClick = () => {},
+  className = '',
 }) => {
   const wrapperRef = useRef(null);
 
   useEffect(() => {
     const handleClickListener = (event) => {
-      let clickedInside = false;
-      if (exceptionRef) {
-        clickedInside =
-          (wrapperRef.current &&
-            wrapperRef.current.contains(event.target)) ||
-          (exceptionRef.current && exceptionRef.current === event.target) ||
-          (exceptionRef.current &&
-            exceptionRef.current.contains(event.target));
-      } else {
-        clickedInside =
-          wrapperRef.current &&
-          wrapperRef.current.contains(event.target);
-      }
+      const clickedInside =
+        wrapperRef.current?.contains(event.target) ||
+        exceptionRef?.current?.contains(event.target) ||
+        exceptionRef?.current === event.target;
 
       if (!clickedInside) onClick();
     };
@@ -35,7 +26,7 @@ const ClickOutside = ({
   }, [exceptionRef, onClick]);
 
   return (
-    <div ref={wrapperRef} className={`${className || ''}`}>
+    <div ref={wrapperRef} className={className}>
       {children}
     </div>
   );

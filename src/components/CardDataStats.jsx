@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 const CardDataStats= ({
-  title,
-  total,
-  rate,
-  levelUp,
-  levelDown,
-  children,
+  title = '',
+  total = '',
+  rate = '',
+  levelUp = false,
+  levelDown = false,
+  children = null,
 }) => {
   return (
     <div className="rounded-sm border border-stroke bg-white py-6 px-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">

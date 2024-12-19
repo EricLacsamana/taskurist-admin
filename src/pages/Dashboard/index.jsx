@@ -3,10 +3,9 @@ import CardDataStats from '../../components/CardDataStats';
 import ChartOne from '../../components/Charts/ChartOne';
 import ChartThree from '../../components/Charts/ChartThree';
 import ChartTwo from '../../components/Charts/ChartTwo';
-import ChatCard from '../../components/Chat/ChatCard';
+// import ChatCard from '../../components/Chat/ChatCard';
 import TableOne from '../../components/Tables/TableOne';
 import Calendar from '../../components/Calendar';
-import Team from '../../components/TeamCard';
 import TeamCard from '../../components/TeamCard';
 
 const Dashboard = () => {

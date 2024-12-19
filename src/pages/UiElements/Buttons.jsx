@@ -140,8 +140,7 @@ const Buttons = () => {
                     fill=""
                   />
                 </svg>
-              </span>
-              Button With Icon
+              </span>Button With Icon
             </Link>
 
             <Link
@@ -166,8 +165,7 @@ const Buttons = () => {
                     fill=""
                   />
                 </svg>
-              </span>
-              Button With Icon
+              </span>Button With Icon
             </Link>
 
             <Link
@@ -192,8 +190,7 @@ const Buttons = () => {
                     fill=""
                   />
                 </svg>
-              </span>
-              Button With Icon
+              </span>Button With Icon
             </Link>
 
             <Link
@@ -218,8 +215,7 @@ const Buttons = () => {
                     fill=""
                   />
                 </svg>
-              </span>
-              Button With Icon
+              </span>Button With Icon
             </Link>
           </div>
 
@@ -250,8 +246,7 @@ const Buttons = () => {
                     fill=""
                   />
                 </svg>
-              </span>
-              Button With Icon
+              </span>Button With Icon
             </Link>
 
             <Link
@@ -280,8 +275,7 @@ const Buttons = () => {
                     fill=""
                   />
                 </svg>
-              </span>
-              Button With Icon
+              </span>Button With Icon
             </Link>
 
             <Link
@@ -310,8 +304,7 @@ const Buttons = () => {
                     fill=""
                   />
                 </svg>
-              </span>
-              Button With Icon
+              </span>Button With Icon
             </Link>
 
             <Link
@@ -340,8 +333,7 @@ const Buttons = () => {
                     fill=""
                   />
                 </svg>
-              </span>
-              Button With Icon
+              </span>Button With Icon
             </Link>
           </div>
 
@@ -371,8 +363,7 @@ const Buttons = () => {
                     </clipPath>
                   </defs>
                 </svg>
-              </span>
-              Button With Icon
+              </span>Button With Icon
             </Link>
 
             <Link
@@ -400,8 +391,7 @@ const Buttons = () => {
                     </clipPath>
                   </defs>
                 </svg>
-              </span>
-              Button With Icon
+              </span>Button With Icon
             </Link>
 
             <Link
@@ -429,8 +419,7 @@ const Buttons = () => {
                     </clipPath>
                   </defs>
                 </svg>
-              </span>
-              Button With Icon
+              </span>Button With Icon
             </Link>
 
             <Link
@@ -458,8 +447,7 @@ const Buttons = () => {
                     </clipPath>
                   </defs>
                 </svg>
-              </span>
-              Button With Icon
+              </span>Button With Icon
             </Link>
           </div>
         </div>

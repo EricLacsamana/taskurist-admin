@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 const options = {
@@ -62,7 +62,7 @@ const options = {
 };
 
 const ChartTwo = () => {
-  const [state, setState] = useState({
+  const state = {
     series: [
       {
         name: 'Jobs',
@@ -73,14 +73,7 @@ const ChartTwo = () => {
         data: [13, 23, 20, 8, 13, 27, 15],
       },
     ],
-  });
-  
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-    }));
   };
-  handleReset;  
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">

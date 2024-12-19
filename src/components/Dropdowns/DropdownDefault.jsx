@@ -1,5 +1,4 @@
-import { useInsertionEffect } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useInsertionEffect, useEffect, useState } from "react";
 
 const DropdownDefault = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);

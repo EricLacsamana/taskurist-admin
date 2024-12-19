@@ -46,17 +46,9 @@ const options = {
 };
 
 const ChartThree = () => {
-  const [state, setState] = useState({
+  const state = {
     series: [65, 34, 12, 56],
-  });
-
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-      series: [65, 34, 12, 56],
-    }));
   };
-  handleReset;
 
   return (
     <div className="sm:px-7.5 col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-5">
