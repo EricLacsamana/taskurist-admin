@@ -70,7 +70,7 @@ const packageData = [
                   Package
                 </th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white" style={{ width: '25%' }}>
-                  Invoice date
+                  Request date
                 </th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white" style={{ width: '25%' }}>
                   Status
