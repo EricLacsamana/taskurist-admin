@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { store } from '../store';
 import { setAccessToken, setRefreshToken, logoutSuccess } from '../store/authSlice';
+import { thenCallbackRQ } from '../utils/helpers';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -94,8 +95,7 @@ export const createJobOrder = async (task) => {
 };
 
 export const retrieveJobOrders = async () => {
-  const response = await api.get('/job-orders');
-  return response.data;
+  return  api.get('/job-orders').then(thenCallbackRQ);
 };
 
 export const updateJobOrder = async (task) => {
