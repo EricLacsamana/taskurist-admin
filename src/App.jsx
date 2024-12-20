@@ -18,6 +18,7 @@ import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
 import AuthenticatedLayout from './layout/AuthenticatedLayout';
 import JobOrders from './pages/JobOrders';
+import Users from './pages/Users';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -73,6 +74,15 @@ function App() {
             <>
               <PageTitle title="Job Order Form | Taskurist - Tailwind CSS Admin Dashboard Template" />
               <JobOrders />
+            </>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <>
+              <PageTitle title="Job Order Form | Taskurist - Tailwind CSS Admin Dashboard Template" />
+              <Users />
             </>
           }
         />
