@@ -1,7 +1,19 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const DefaultLayout = () => {
+  const navigate = useNavigate();
+  // const name = useSelector((state) => state.auth.name);
+  const accessToken = useSelector((state) => state.auth.accessToken);
+
+  useEffect(() => {
+    if (accessToken !== null) {
+      navigate('/');
+    }
+  }, [accessToken, navigate]);
+
+  if (accessToken !== null)  return null;
 
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">

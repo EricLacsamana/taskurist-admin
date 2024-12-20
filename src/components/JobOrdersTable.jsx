@@ -1,6 +1,6 @@
 const packageData = [
     {
-      name: 'Free package',
+      name: 'Repair brakes',
       price: 0.0,
       invoiceDate: `Jan 13,2023`,
       status: 'Completed',
@@ -67,7 +67,7 @@ const packageData = [
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="py-4 px-4 font-medium text-black dark:text-white" style={{ width: '25%' }}>
-                  Package
+                  Job Title
                 </th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white" style={{ width: '25%' }}>
                   Request date

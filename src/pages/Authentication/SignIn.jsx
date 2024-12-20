@@ -1,17 +1,22 @@
 import { Link, useNavigate } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
-import Logo from '../../images/logo/logo.svg';
+import Logo from '../../images/logo/taskurist-logo-black.svg';
 import { useMutation } from '@tanstack/react-query';
-import { login } from '../../api/api';
+import { loginUserApi } from '../../api/api';
 import SignInForm from '../../components/SignInForm';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../../store/authSlice';
 
 const SignIn = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
    const mutation = useMutation({
-    mutationFn: login,
+    mutationFn: loginUserApi,
     onSuccess: (data) => {
+      console.log('daaaa', data);
+      dispatch(loginSuccess(data));
       navigate('/')
+
       console.log('Sign-in successful:', data);
     },
     onError: (error) => {

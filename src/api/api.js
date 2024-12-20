@@ -1,19 +1,117 @@
 import axios from 'axios';
+import { store } from '../store';
+import { setAccessToken, setRefreshToken, logoutSuccess } from '../store/authSlice';
+
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
+const getAccessToken = () => {
+  const state = store.getState();
+  return state.auth.accessToken;
+};
+
+const getRefreshToken = () => {
+  const state = store.getState();
+  return state.auth.refreshToken;
+};
+
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('authToken');
-  if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`; 
+  const accessToken = getAccessToken();
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
+}, (error) => {
+  return Promise.reject(error);
 });
+
+api.interceptors.response.use(
+  response => response,
+  async error => {
+    const originalRequest = error.config;
+
+    if (error.response && error.response.status === 401) {
+      const refreshToken = getRefreshToken();
+
+      if (refreshToken) {
+        try {
+          const response = await api.post('/auth/refresh', { refreshToken });
+          const { accessToken, refreshToken: newRefreshToken } = response.data;
+
+          store.dispatch(setAccessToken(accessToken));
+          store.dispatch(setRefreshToken(newRefreshToken));
+
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+          return api(originalRequest);
+        } catch (refreshError) {
+          console.error('Failed to refresh token:', refreshError);
+          store.dispatch(logoutSuccess());
+          return Promise.reject(refreshError);
+        }
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export const createUser = async (data) => {
+  const response = await api.post('/auth/register', data);
+  return response.data;
+};
+
+export const loginUserApi = async (payload) => {
+  const response = await api.post('/auth/login', payload);
+  const { accessToken, refreshToken, user } = response.data;
+  
+  store.dispatch(setAccessToken(accessToken));
+  // store.dispatch(setRefreshToken(refreshToken));
+
+  return { user, accessToken, refreshToken };
+};
+
+// eslint-disable-next-line no-unused-vars
+export const logoutUserApi = async (refreshToken) => {
+  try {
+    // await api.post('/auth/logout', { refreshToken });
+    store.dispatch(logoutSuccess());
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  } catch (error) {
+    console.error('Failed to logout:', error);
+  }
+};
+
+export const createJobOrder = async (task) => {
+  const response = await api.post('/job-orders', task);
+  return response.data;
+};
+
+export const retrieveJobOrders = async () => {
+  const response = await api.get('/job-orders');
+  return response.data;
+};
+
+export const updateJobOrder = async (task) => {
+  const response = await api.put(`/job-orders/${task.id}`, task);
+  return response.data;
+};
+
+export const updateToggleCompleteJobOrder = async (id) => {
+  const response = await api.put(`/job-orders/${id}/complete`);
+  return response.data;
+};
+
+export const deleteJobOrder = async (id) => {
+  await api.delete(`/job-orders/${id}`);
+};
+
 
 export const register = async (userData) => {
     try {
