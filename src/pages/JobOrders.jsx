@@ -22,7 +22,7 @@ const JobOrders = () => {
     });
     const jobOrders = data?.data;
 
-    console.log('tesss', jobOrders);
+    console.log('AWWWW', jobOrders);
     // console.log('dataaaa job', data);
     // if (isLoading) {
     //     return <div>Loading...</div>;
@@ -39,7 +39,7 @@ const JobOrders = () => {
 
         <div className="flex flex-col gap-10">
 
-            <JobOrdersTable />
+            <JobOrdersTable data={jobOrders} />
             <FloatingActionButton onClick={handleOpenModal} />
             <JobOrderModal isOpen={isOpen} onClose={handleCloseModal} />
         </div>

@@ -1,11 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import JobOrderForm from "../../pages/Form/JobOrderForm";
+import { createJobOrder } from "../../api/api";
 
 export const JobOrderModal = ({ onClose, isOpen }) => {
-  // Early return if the modal is not open
-  if (!isOpen) return null;
+  const queryClient = useQueryClient();
+  const [formData, setFormData] = useState(null);
 
-  // Close the modal when the Escape key is pressed
+  const { mutate, isPending, isError, error, isSuccess, data } = useMutation({
+    mutationFn: createJobOrder, // The function to be called with data
+    onSuccess: () => {
+      queryClient.invalidateQueries(['jobOrders']);
+      onClose();
+    },
+    onError: (error) => {
+
+      console.error(error);
+    },
+  });
+
   useEffect(() => {
     const handleEscKey = (e) => {
       if (e.key === "Escape") {
@@ -13,19 +26,25 @@ export const JobOrderModal = ({ onClose, isOpen }) => {
       }
     };
 
-    // Attach the event listener for the Escape key
     document.addEventListener("keydown", handleEscKey);
 
-    // Cleanup the event listener on component unmount
     return () => {
       document.removeEventListener("keydown", handleEscKey);
     };
   }, [onClose]);
 
+  const handleFormSubmit = (formData) => {
+    // Trigger the mutation with formData
+    mutate(formData);
+  };
+
+  // Early return if the modal is not open
+  if (!isOpen) return null;
+
   return (
     <div
       className="modal-container fixed inset-0 flex justify-center items-center z-9999 bg-gray-500 bg-opacity-50"
-      onClick={(e) => {
+      onClick={(e) => { 
         if (e.target.className === "modal-container") onClose();
       }}
       aria-hidden={!isOpen}
@@ -36,7 +55,7 @@ export const JobOrderModal = ({ onClose, isOpen }) => {
         aria-labelledby="modalTitle"
         aria-describedby="modalDescription"
       >
-        {/* Close button with absolute positioning */}
+        {/* Close button */}
         <button
           className="text-xl align-center cursor-pointer absolute top-4 right-4 dark:text-white"
           onClick={onClose}
@@ -51,13 +70,16 @@ export const JobOrderModal = ({ onClose, isOpen }) => {
           </h3>
         </div>
 
-        {/* Modal content section with scrollable area */}
+        {/* Modal content section */}
         <div className="modal-content overflow-y-auto max-h-[93vh] p-6">
-          {/* Job Order Form component */}
-          <JobOrderForm />
+          <JobOrderForm 
+            onSubmit={handleFormSubmit} // Passing the submit handler to the form
+            isLoading={isPending} // Pass the loading state to the form for disabling the button
+            isError={isError} // Pass error state to show error messages in the form
+            error={error} // Pass the error message
+          />
         </div>
       </div>
     </div>
   );
 };
-  

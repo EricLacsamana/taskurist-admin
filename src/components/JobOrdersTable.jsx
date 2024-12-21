@@ -1,126 +1,93 @@
-const packageData = [
-    {
-      name: 'Repair brakes',
-      price: 0.0,
-      invoiceDate: `Jan 13,2023`,
-      status: 'Completed',
-    },
-    {
-      name: 'Standard Package',
-      price: 59.0,
-      invoiceDate: `Jan 13,2023`,
-      status: 'Completed',
-    },
-    {
-      name: 'Business Package',
-      price: 99.0,
-      invoiceDate: `Jan 13,2023`,
-      status: 'In Progress',
-    },
-    {
-      name: 'Standard Package',
-      price: 59.0,
-      invoiceDate: `Jan 13,2023`,
-      status: 'Pending',
-    },
-    {
-        name: 'Standard Package',
-        price: 59.0,
-        invoiceDate: `Jan 13,2023`,
-        status: 'Pending',
-      },
-      {
-        name: 'Standard Package',
-        price: 59.0,
-        invoiceDate: `Jan 13,2023`,
-        status: 'Pending',
-      },
-      {
-        name: 'Standard Package',
-        price: 59.0,
-        invoiceDate: `Jan 13,2023`,
-        status: 'Pending',
-      },
-      {
-        name: 'Standard Package',
-        price: 59.0,
-        invoiceDate: `Jan 13,2023`,
-        status: 'Pending',
-      },
-      {
-        name: 'Standard Package',
-        price: 59.0,
-        invoiceDate: `Jan 13,2023`,
-        status: 'Pending',
-      },
-  ];
+const JobOrdersTable = ({ data = [] }) => {
   
-  const JobOrdersTable = () => {
-    return (
-      <div
-        className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1"
-        style={{ height: '75vh' }}
-      >
-        <div className="max-w-full overflow-x-auto">
-          {/* Table wrapper */}
+  // Function to map the job status to a more readable title
+  const getStatusTitle = (status) => {
+    const statusMap = {
+      'pending': 'Pending',
+      'in-progress': 'In Progress',
+      'completed': 'Completed',
+    };
+    return statusMap[status] || 'Unknown'; // Default to 'Unknown' if status is not recognized
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+      weekday: 'long', // e.g. "Monday"
+      year: 'numeric', // e.g. "2024"
+      month: 'long', // e.g. "December"
+      day: 'numeric', // e.g. "21"
+      hour: 'numeric', // e.g. "5 PM"
+      minute: 'numeric', // e.g. "58"
+      second: 'numeric', // e.g. "12"
+      hour12: true, // 12-hour clock with AM/PM
+    });
+  };
+
+  return (
+    <div
+      className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1"
+      style={{ height: '75vh' }}
+    >
+      <div className="max-w-full overflow-x-auto">
+        {/* Table wrapper */}
+        <table className="w-full table-auto" style={{ tableLayout: 'fixed' }}>
+          <thead>
+            <tr className="bg-gray-2 text-left dark:bg-meta-4">
+              <th className="py-4 px-4 font-medium text-black dark:text-white" style={{ width: '25%' }}>
+                Job Title
+              </th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white" style={{ width: '33%' }}>
+                Request date
+              </th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white" style={{ width: '17%' }}>
+                Status
+              </th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white" style={{ width: '25%' }}>
+                Actions
+              </th>
+            </tr>
+          </thead>
+        </table>
+
+        {/* Table body with overflow scroll */}
+        <div
+          style={{
+            maxHeight: 'calc(70vh - 72px)', // Subtract the header's height from the container's height
+            overflowY: 'auto',
+            display: 'block',
+          }}
+        >
           <table className="w-full table-auto" style={{ tableLayout: 'fixed' }}>
-            <thead>
-              <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                <th className="py-4 px-4 font-medium text-black dark:text-white" style={{ width: '25%' }}>
-                  Job Title
-                </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white" style={{ width: '25%' }}>
-                  Request date
-                </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white" style={{ width: '25%' }}>
-                  Status
-                </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white" style={{ width: '25%' }}>
-                  Actions
-                </th>
-              </tr>
-            </thead>
-          </table>
-  
-          {/* Table body with overflow scroll */}
-          <div
-            style={{
-              maxHeight: 'calc(70vh - 72px)', // Subtract the header's height from the container's height
-              overflowY: 'auto',
-              display: 'block',
-            }}
-          >
-            <table className="w-full table-auto" style={{ tableLayout: 'fixed' }}>
-              <tbody>
-                {packageData.map((packageItem, key) => (
+            <tbody>
+              {data.map((jobOrder, key) => (
                 <tr key={key}>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                     <h5 className="font-medium text-black dark:text-white">
-                        {packageItem.name}
+                      {jobOrder.title}
                     </h5>
-                    <p className="text-sm">${packageItem.price}</p>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                        {packageItem.invoiceDate}
+                      {formatDate(jobOrder.createdAt)} {/* Format the date */}
                     </p>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-5 dark:border-strokedark flex justify-center items-center">
                     <p
-                        className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                        packageItem.status === 'Completed'
-                            ? 'bg-success text-success'
-                            : packageItem.status === 'In Progress'
-                            ? 'bg-danger text-danger'
-                            : 'bg-warning text-warning'
-                        }`}
+                      className={`inline-flex justify-center items-center rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
+                        jobOrder.status === 'completed'
+                          ? 'bg-success text-success'
+                          : jobOrder.status === 'in-progress'
+                          ? 'bg-danger text-danger'
+                          : 'bg-warning text-warning'
+                      }`}
                     >
-                        {packageItem.status}
+                      {getStatusTitle(jobOrder.status)}
                     </p>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex items-center space-x-3.5">
-                        <button className="hover:text-primary">
+                      <button className="hover:text-primary">
                         <svg
                             className="fill-current"
                             width="18"
@@ -186,19 +153,17 @@ const packageData = [
                         </svg>
                         </button>
                     </div>
-                    </td>
+                  </td>
                 </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
-    );
-  };
-  
-  export default JobOrdersTable;
-  
-  
-  
-  
+    </div>
+  );
+};
+
+export default JobOrdersTable;
+
+

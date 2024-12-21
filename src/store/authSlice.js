@@ -7,7 +7,7 @@ const initialState  = {
     refreshToken: null,
     user: {
       id: null,
-      username: null,
+      name: null,
       email: null,
       role: null,
     },

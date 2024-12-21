@@ -2,31 +2,27 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import MultiSelect from '../../components/Forms/MultiSelect';
 
-const JobOrderForm = () => {
+const JobOrderForm = ({ onSubmit = () => {} }) => {
   const availablePersonnel = [
     'John Doe', 'Jane Smith', 'Alice Johnson', 'Bob Brown', 'Charlie Davis'
   ];
 
-  const { control, handleSubmit, watch, register, setValue, getValues } = useForm({
+  const { control, handleSubmit, watch, register, setValue, getValues, formState: { errors } } = useForm({
     defaultValues: {
       title: '',
       description: '',
       jobType: '',
-      schedule: [{ startDate: '', endDate: '', expectedQuantity: '', actualQuantity: '' }],
-      workersAssigned: [],
-      assetsToRepair: [],
-      inventorySku: '',
-      repairDetails: '',
-      jobStatus: 'pending',
-      totalQuantity: ''
+      schedules: [{ startDate: '', endDate: '', expectedQuantity: '', actualQuantity: '' }],
+      assignedPersonnel: [],
+      assets: [],
+      serviceDetails: '',
+      status: 'pending',
     }
   });
 
-  const watchJobType = watch('jobType'); // Watch job type to conditionally render fields
+  const watchJobType = watch('jobType');
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+
 
   const addSchedule = () => {
     const newSchedule = [...getValues('schedule'), { startDate: '', endDate: '', expectedQuantity: '', actualQuantity: '' }];
@@ -47,39 +43,51 @@ const JobOrderForm = () => {
           <label className="block text-black dark:text-white">Start Date</label>
           <input
             type="date"
-            {...register(`schedule[${index}].startDate`)}
-            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none"
+            {...register(`schedule[${index}].startDate`, { required: 'Start date is required' })}
+            className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors?.schedule?.[index]?.startDate ? 'border-red-500' : ''}`}
           />
+          {errors?.schedule?.[index]?.startDate && (
+            <span className="text-red-500 text-sm">{errors.schedule[index].startDate.message}</span>
+          )}
         </div>
         <div>
           <label className="block text-black dark:text-white">End Date</label>
           <input
             type="date"
-            {...register(`schedule[${index}].endDate`)}
-            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none"
+            {...register(`schedule[${index}].endDate`, { required: 'End date is required' })}
+            className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors?.schedule?.[index]?.endDate ? 'border-red-500' : ''}`}
           />
+          {errors?.schedule?.[index]?.endDate && (
+            <span className="text-red-500 text-sm">{errors.schedule[index].endDate.message}</span>
+          )}
         </div>
 
         {/* Quantities */}
-        {watchJobType !== 'production' && (
+        {watchJobType === 'production' && (
           <>
             <div>
               <label className="block text-black dark:text-white">Expected Quantity</label>
               <input
                 type="number"
                 placeholder="Expected Quantity"
-                {...register(`schedule[${index}].expectedQuantity`)}
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none"
+                {...register(`schedule[${index}].expectedQuantity`, { required: 'Expected quantity is required' })}
+                className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors?.schedule?.[index]?.expectedQuantity ? 'border-red-500' : ''}`}
               />
+              {errors?.schedule?.[index]?.expectedQuantity && (
+                <span className="text-red-500 text-sm">{errors.schedule[index].expectedQuantity.message}</span>
+              )}
             </div>
             <div>
               <label className="block text-black dark:text-white">Actual Quantity</label>
               <input
                 type="number"
                 placeholder="Actual Quantity"
-                {...register(`schedule[${index}].actualQuantity`)}
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none"
+                {...register(`schedule[${index}].actualQuantity`, { required: 'Actual quantity is required' })}
+                className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors?.schedule?.[index]?.actualQuantity ? 'border-red-500' : ''}`}
               />
+              {errors?.schedule?.[index]?.actualQuantity && (
+                <span className="text-red-500 text-sm">{errors.schedule[index].actualQuantity.message}</span>
+              )}
             </div>
           </>
         )}
@@ -106,9 +114,10 @@ const JobOrderForm = () => {
         <input
           type="text"
           placeholder="Enter job order title"
-          {...register('title')}
-          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none"
+          {...register('title', { required: 'Title is required' })}
+          className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors.title ? 'border-red-500' : ''}`}
         />
+        {errors.title && <span className="text-red-500 text-sm">{errors.title.message}</span>}
       </div>
 
       {/* Job Description */}
@@ -117,26 +126,28 @@ const JobOrderForm = () => {
         <textarea
           rows="4"
           placeholder="Enter job order description"
-          {...register('description')}
-          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none"
-        ></textarea>
+          {...register('description', { required: 'Description is required' })}
+          className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors.description ? 'border-red-500' : ''}`}
+        />
+        {errors.description && <span className="text-red-500 text-sm">{errors.description.message}</span>}
       </div>
 
       {/* Job Type */}
       <div className="mb-4.5">
         <label className="mb-2.5 block text-black dark:text-white">Job Type</label>
-        <select {...register('jobType')} className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none">
+        <select {...register('jobType', { required: 'Job type is required' })} className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors.jobType ? 'border-red-500' : ''}`}>
           <option value="">Select Job Type</option>
-          <option value="repair">Repair</option>
+          <option value="service">Service</option>
           <option value="maintenance">Maintenance</option>
           <option value="production">Production</option>
         </select>
+        {errors.jobType && <span className="text-red-500 text-sm">{errors.jobType.message}</span>}
       </div>
 
       {/* Schedule */}
       <div className="mb-4.5">
         <label className="mb-2.5 block text-black dark:text-white">Schedule</label>
-        {watch('schedule').map((scheduleItem, index) => renderScheduleField(scheduleItem, index))}
+        {watch('schedules').map((scheduleItem, index) => renderScheduleField(scheduleItem, index))}
         <button
           type="button"
           onClick={addSchedule}
@@ -150,7 +161,7 @@ const JobOrderForm = () => {
       <div className="mb-4.5">
         <label className="mb-2.5 block text-black dark:text-white">Assigned Personnel</label>
         <Controller
-          name="workersAssigned"
+          name="assignedPersonnel"
           control={control}
           render={({ field }) => (
             <MultiSelect
@@ -164,40 +175,28 @@ const JobOrderForm = () => {
       </div>
 
       {/* Repair Details - Only visible if Job Type is not "production" */}
-      {watchJobType === 'repair' && (
+      {watchJobType === 'service' && (
         <div className="mb-4.5">
           <label className="mb-2.5 block text-black dark:text-white">Repair Details</label>
           <textarea
             rows="4"
-            placeholder="Enter repair details"
-            {...register('repairDetails')}
-            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none"
-          ></textarea>
+            placeholder="Enter service details"
+            {...register('serviceDetails', { required: 'Repair details are required for service jobs' })}
+            className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors.serviceDetails ? 'border-red-500' : ''}`}
+          />
+          {errors.serviceDetails && <span className="text-red-500 text-sm">{errors.serviceDetails.message}</span>}
         </div>
       )}
 
       {/* Job Status */}
       <div className="mb-4.5">
-        <label className="mb-2.5 block text-black dark:text-white">Job Status</label>
-        <select {...register('jobStatus')} className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none">
+        <label className="mb-2.5 block text-black dark:text-white">Status</label>
+        <select {...register('status')} className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none">
           <option value="pending">Pending</option>
           <option value="in-progress">In Progress</option>
           <option value="completed">Completed</option>
         </select>
       </div>
-
-      {/* Total Quantity - Only visible if Job Type is "production" */}
-      {watchJobType === 'production' && (
-        <div className="mb-4.5">
-          <label className="mb-2.5 block text-black dark:text-white">Total Quantity</label>
-          <input
-            type="number"
-            placeholder="Enter total quantity"
-            {...register('totalQuantity')}
-            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none"
-          />
-        </div>
-      )}
 
       <button
         type="submit"

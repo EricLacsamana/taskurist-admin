@@ -24,6 +24,7 @@ const getRefreshToken = () => {
 
 api.interceptors.request.use((config) => {
   const accessToken = getAccessToken();
+
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
@@ -70,7 +71,7 @@ export const createUser = async (data) => {
 export const loginUserApi = async (payload) => {
   const response = await api.post('/auth/login', payload);
   const { accessToken, refreshToken, user } = response.data;
-  
+
   store.dispatch(setAccessToken(accessToken));
   // store.dispatch(setRefreshToken(refreshToken));
 
@@ -89,8 +90,9 @@ export const logoutUserApi = async (refreshToken) => {
   }
 };
 
-export const createJobOrder = async (task) => {
-  const response = await api.post('/job-orders', task);
+export const createJobOrder = async (payload) => {
+  console.log('payload', payload);
+  const response = await api.post('/job-orders', payload);
   return response.data;
 };
 
@@ -98,8 +100,8 @@ export const retrieveJobOrders = async () => {
   return  api.get('/job-orders').then(thenCallbackRQ);
 };
 
-export const updateJobOrder = async (task) => {
-  const response = await api.put(`/job-orders/${task.id}`, task);
+export const updateJobOrder = async (payload) => {
+  const response = await api.put(`/job-orders/${payload.id}`, payload);
   return response.data;
 };
 
@@ -141,7 +143,7 @@ export const getUserProfile = async () => {
   }
 };
 
-export const getUsers = async () => {
+export const retrieveUsers = async () => {
   try {
     const response = await api.get('/users');
     return response.data;

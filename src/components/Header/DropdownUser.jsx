@@ -9,9 +9,8 @@ const DropdownUser = () => {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const refreshToken = useSelector((state) => state.auth.refreshToken);
-  const user = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth?.user);
 
-  console.log('user', user);
   const handleLogout = async () => {
     await logoutUserApi(refreshToken);
     navigate('/auth/signin');
@@ -26,9 +25,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            {user.name}
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">{user.role}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
@@ -58,7 +57,7 @@ const DropdownUser = () => {
           className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark`}
         >
           <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
-            <li>
+            {/* <li>
               <Link
                 to="/profile"
                 className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -82,7 +81,7 @@ const DropdownUser = () => {
                 </svg>
                 My Profile
               </Link>
-            </li>
+            </li> */}
 
             <li>
               <Link
