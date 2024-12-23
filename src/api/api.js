@@ -143,9 +143,12 @@ export const getUserProfile = async () => {
   }
 };
 
-export const retrieveUsers = async () => {
+export const retrieveUsers = async (ctx) => {
+  const { queryKey } = ctx;
+	const [, params] = queryKey;
+
   try {
-    const response = await api.get('/users');
+    const response = await api.get('/users',  { params });
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Failed to fetch users');

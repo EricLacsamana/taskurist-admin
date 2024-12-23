@@ -106,12 +106,12 @@ const Dashboard = () => {
         <div className="col-span-12 xl:col-span-7">
           <Calendar />
         </div>
-        <div className="col-span-12 xl:col-span-8">
+        {/* <div className="col-span-12 xl:col-span-8">
           <TableOne />
         </div>
         <div className="col-span-12 xl:col-span-4">
           <TeamCard />
-        </div>       
+        </div>        */}
       </div>
     </>
   );

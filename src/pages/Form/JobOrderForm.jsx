@@ -1,11 +1,20 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import MultiSelect from '../../components/Forms/MultiSelect';
+import { useQuery } from '@tanstack/react-query';
+import { retrieveUsers } from '../../api/api';
 
 const JobOrderForm = ({ onSubmit = () => {} }) => {
-  const availablePersonnel = [
-    'John Doe', 'Jane Smith', 'Alice Johnson', 'Bob Brown', 'Charlie Davis'
-  ];
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['users-user',  { role: 'user' }], 
+    queryFn: retrieveUsers,
+    refetchOnWindowFocus: true,
+  });
+
+
+
+  const availablePersonnel = data?.data.map((user)=>( { value: user._id, title: user.name }));
 
   const { control, handleSubmit, watch, register, setValue, getValues, formState: { errors } } = useForm({
     defaultValues: {
@@ -19,10 +28,8 @@ const JobOrderForm = ({ onSubmit = () => {} }) => {
       status: 'pending',
     }
   });
-
+  console.log('quyacker', watch("assignedPersonnel"));
   const watchJobType = watch('jobType');
-
-
 
   const addSchedule = () => {
     const newSchedule = [...getValues('schedule'), { startDate: '', endDate: '', expectedQuantity: '', actualQuantity: '' }];

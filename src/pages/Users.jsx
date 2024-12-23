@@ -12,7 +12,7 @@ const Users = () => {
     const handleCloseModal = () => setIsOpen(false)
         // Use useQuery with the new object syntax
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ['job-orders'],  // Query key should be an array (unique identifier)
+        queryKey: ['users'],  // Query key should be an array (unique identifier)
         queryFn: retrieveUsers,  // Fetch function (previously the second argument)
         // Additional configuration options
         retry: 3,  // Optional: retry failed requests up to 3 times
