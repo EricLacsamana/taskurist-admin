@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const MultiSelect = ({ id, options = [], selectedValues = [], onChange }) => {
+const MultiSelect = ({ value, options = [], selectedValues = [], onChange }) => {
   const [show, setShow] = useState(false);
   const [selected, setSelected] = useState(selectedValues);
   const dropdownRef = useRef(null);
   const trigger = useRef(null);
+
+  // Synchronize selected state with selectedValues prop when it changes
+  useEffect(() => {
+    setSelected(selectedValues);
+  }, [selectedValues]);
 
   // Open the dropdown
   const open = () => setShow(true);

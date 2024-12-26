@@ -91,18 +91,23 @@ export const logoutUserApi = async (refreshToken) => {
 };
 
 export const createJobOrder = async (payload) => {
-  console.log('payload', payload);
+  console.log('lagups', payload);
   const response = await api.post('/job-orders', payload);
   return response.data;
 };
 
-export const retrieveJobOrders = async () => {
-  return  api.get('/job-orders').then(thenCallbackRQ);
+export const retrieveJobOrders = async (params) => {
+  return  api.get('/job-orders', params).then(thenCallbackRQ);
 };
 
-export const updateJobOrder = async (payload) => {
-  const response = await api.put(`/job-orders/${payload.id}`, payload);
-  return response.data;
+export const retrieveJobOrder = async (id) => {
+  return api.get(`/job-orders/${id}`).then(thenCallbackRQ);
+};
+
+export const updateJobOrder = async (data) => {
+  const { id, ...payload } = data;
+  console.log('lagupar', data);
+  return api.put(`/job-orders/${id}`, payload);
 };
 
 export const updateToggleCompleteJobOrder = async (id) => {

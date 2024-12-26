@@ -13,14 +13,11 @@ const SignIn = () => {
    const mutation = useMutation({
     mutationFn: loginUserApi,
     onSuccess: (data) => {
-      console.log('daaaa', data);
       dispatch(loginSuccess(data));
-      navigate('/')
-
+      navigate('/');
       console.log('Sign-in successful:', data);
     },
     onError: (error) => {
-      // reset({ email: '', password: '' });
       console.error('Sign-in error:', error);
     },
   });

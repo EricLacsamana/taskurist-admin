@@ -1,45 +1,69 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import MultiSelect from '../../components/Forms/MultiSelect';
 import { useQuery } from '@tanstack/react-query';
 import { retrieveUsers } from '../../api/api';
 
-const JobOrderForm = ({ onSubmit = () => {} }) => {
-
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['users-user',  { role: 'user' }], 
+const JobOrderForm = ({ onSubmit = () => {}, initialData = {} }) => {
+  const { data } = useQuery({
+    queryKey: ['users-user', { role: 'user' }],
     queryFn: retrieveUsers,
     refetchOnWindowFocus: true,
   });
 
-
-
-  const availablePersonnel = data?.data.map((user)=>( { value: user._id, title: user.name }));
+  const availablePersonnel = data?.data.map((user) => ({
+    value: user._id,
+    title: user.name,
+  }));
 
   const { control, handleSubmit, watch, register, setValue, getValues, formState: { errors } } = useForm({
     defaultValues: {
+      id: '',
       title: '',
       description: '',
       jobType: '',
+      status: 'pending',
       schedules: [{ startDate: '', endDate: '', expectedQuantity: '', actualQuantity: '' }],
       assignedPersonnel: [],
       assets: [],
       serviceDetails: '',
-      status: 'pending',
     }
   });
-  console.log('quyacker', watch("assignedPersonnel"));
+
+  useEffect(() => {
+    if (initialData._id) {
+      setValue('id', initialData._id || '');
+      setValue('title', initialData.title || '');
+      setValue('description', initialData.description || '');
+      setValue('jobType', initialData.jobType || '');
+      setValue('assignedPersonnel', initialData.assignedPersonnel?.map((data) => data._id) || []);
+      setValue('assets', initialData.assets || []);
+      setValue('serviceDetails', initialData.serviceDetails || '');
+      setValue('status', initialData.status || 'pending');
+      
+      // Format the schedule dates correctly to yyyy-MM-dd
+      const schedules = initialData.schedules?.map(schedule => ({
+        ...schedule,
+        startDate: schedule.startDate ? new Date(schedule.startDate).toISOString().split('T')[0] : '',
+        endDate: schedule.endDate ? new Date(schedule.endDate).toISOString().split('T')[0] : ''
+      })) || [{ startDate: '', endDate: '', expectedQuantity: '', actualQuantity: '' }];
+      
+      setValue('schedules', schedules);
+    }
+  }, [initialData, setValue]);
+  
+
   const watchJobType = watch('jobType');
 
   const addSchedule = () => {
-    const newSchedule = [...getValues('schedule'), { startDate: '', endDate: '', expectedQuantity: '', actualQuantity: '' }];
-    setValue('schedule', newSchedule);
+    const newSchedule = [...getValues('schedules'), { startDate: '', endDate: '', expectedQuantity: '', actualQuantity: '' }];
+    setValue('schedules', newSchedule);
   };
 
   const removeSchedule = (index) => {
-    const currentSchedule = getValues('schedule');
+    const currentSchedule = getValues('schedules');
     const updatedSchedule = currentSchedule.filter((_, i) => i !== index);
-    setValue('schedule', updatedSchedule);
+    setValue('schedules', updatedSchedule);
   };
 
   const renderScheduleField = (scheduleItem, index) => {
@@ -50,26 +74,26 @@ const JobOrderForm = ({ onSubmit = () => {} }) => {
           <label className="block text-black dark:text-white">Start Date</label>
           <input
             type="date"
-            {...register(`schedule[${index}].startDate`, { required: 'Start date is required' })}
-            className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors?.schedule?.[index]?.startDate ? 'border-red-500' : ''}`}
+            {...register(`schedules[${index}].startDate`, { required: 'Start date is required' })}
+            className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors?.schedules?.[index]?.startDate ? 'border-red-500' : ''}`}
           />
-          {errors?.schedule?.[index]?.startDate && (
-            <span className="text-red-500 text-sm">{errors.schedule[index].startDate.message}</span>
+          {errors?.schedules?.[index]?.startDate && (
+            <span className="text-red-500 text-sm">{errors.schedules[index].startDate.message}</span>
           )}
         </div>
         <div>
           <label className="block text-black dark:text-white">End Date</label>
           <input
             type="date"
-            {...register(`schedule[${index}].endDate`, { required: 'End date is required' })}
-            className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors?.schedule?.[index]?.endDate ? 'border-red-500' : ''}`}
+            {...register(`schedules[${index}].endDate`, { required: 'End date is required' })}
+            className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors?.schedules?.[index]?.endDate ? 'border-red-500' : ''}`}
           />
-          {errors?.schedule?.[index]?.endDate && (
-            <span className="text-red-500 text-sm">{errors.schedule[index].endDate.message}</span>
+          {errors?.schedules?.[index]?.endDate && (
+            <span className="text-red-500 text-sm">{errors.schedules[index].endDate.message}</span>
           )}
         </div>
 
-        {/* Quantities */}
+        {/* Schedules */}
         {watchJobType === 'production' && (
           <>
             <div>
@@ -77,11 +101,11 @@ const JobOrderForm = ({ onSubmit = () => {} }) => {
               <input
                 type="number"
                 placeholder="Expected Quantity"
-                {...register(`schedule[${index}].expectedQuantity`, { required: 'Expected quantity is required' })}
-                className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors?.schedule?.[index]?.expectedQuantity ? 'border-red-500' : ''}`}
+                {...register(`schedules[${index}].expectedQuantity`, { required: 'Expected quantity is required' })}
+                className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors?.schedules?.[index]?.expectedQuantity ? 'border-red-500' : ''}`}
               />
-              {errors?.schedule?.[index]?.expectedQuantity && (
-                <span className="text-red-500 text-sm">{errors.schedule[index].expectedQuantity.message}</span>
+              {errors?.schedules?.[index]?.expectedQuantity && (
+                <span className="text-red-500 text-sm">{errors.schedules[index].expectedQuantity.message}</span>
               )}
             </div>
             <div>
@@ -89,15 +113,16 @@ const JobOrderForm = ({ onSubmit = () => {} }) => {
               <input
                 type="number"
                 placeholder="Actual Quantity"
-                {...register(`schedule[${index}].actualQuantity`, { required: 'Actual quantity is required' })}
-                className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors?.schedule?.[index]?.actualQuantity ? 'border-red-500' : ''}`}
+                {...register(`schedules[${index}].actualQuantity`, { required: 'Actual quantity is required' })}
+                className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors?.schedules?.[index]?.actualQuantity ? 'border-red-500' : ''}`}
               />
-              {errors?.schedule?.[index]?.actualQuantity && (
-                <span className="text-red-500 text-sm">{errors.schedule[index].actualQuantity.message}</span>
+              {errors?.schedules?.[index]?.actualQuantity && (
+                <span className="text-red-500 text-sm">{errors.schedules[index].actualQuantity.message}</span>
               )}
             </div>
           </>
         )}
+
 
         {/* Remove Schedule Button */}
         <div className="flex justify-end">
@@ -209,7 +234,7 @@ const JobOrderForm = ({ onSubmit = () => {} }) => {
         type="submit"
         className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
       >
-        Submit Job Order
+        {initialData._id ? 'Update Job Order' : 'Submit Job Order'}
       </button>
     </form>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 const options = {
-  colors: ['#3C50E0', '#80CAEE'],
+  colors: ['#3C50E0', '#4BB543'],
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     type: 'bar',
@@ -65,11 +65,11 @@ const ChartTwo = () => {
   const state = {
     series: [
       {
-        name: 'Jobs',
+        name: 'In-Progress',
         data: [44, 55, 41, 67, 22, 43, 65],
       },
       {
-        name: 'Cost',
+        name: 'Completed',
         data: [13, 23, 20, 8, 13, 27, 15],
       },
     ],

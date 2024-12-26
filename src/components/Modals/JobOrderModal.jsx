@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import JobOrderForm from "../../pages/Form/JobOrderForm";
-import { createJobOrder } from "../../api/api";
+import { createJobOrder, retrieveJobOrder, updateJobOrder } from "../../api/api";
 
-export const JobOrderModal = ({ onClose, isOpen }) => {
+export const JobOrderModal = ({ jobOrderId, isOpen, onClose }) => {
+
   const queryClient = useQueryClient();
-  const [formData, setFormData] = useState(null);
+    const { data = {} , refetch } = useQuery({
+      queryKey: ['job-order'],
+      queryFn: ()=> retrieveJobOrder(jobOrderId),
+      retry: 3,
+      refetchOnWindowFocus: true,
+      enabled: !!jobOrderId,
+  });
 
-  const { mutate, isPending, isError, error, isSuccess, data } = useMutation({
-    mutationFn: createJobOrder, // The function to be called with data
+  const jobOrder =  jobOrderId ? data?.data : {};
+
+  const { mutate, isPending, isError, error, isSuccess } = useMutation({
+    mutationFn: jobOrderId ?  updateJobOrder : createJobOrder,
     onSuccess: () => {
-      queryClient.invalidateQueries(['jobOrders']);
+      queryClient.invalidateQueries(['job-orders']);
       onClose();
+
     },
     onError: (error) => {
-
       console.error(error);
     },
   });
@@ -33,13 +42,16 @@ export const JobOrderModal = ({ onClose, isOpen }) => {
     };
   }, [onClose]);
 
+
+
   const handleFormSubmit = (formData) => {
-    // Trigger the mutation with formData
+
     mutate(formData);
   };
 
-  // Early return if the modal is not open
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div
@@ -47,7 +59,7 @@ export const JobOrderModal = ({ onClose, isOpen }) => {
       onClick={(e) => { 
         if (e.target.className === "modal-container") onClose();
       }}
-      aria-hidden={!isOpen}
+      // aria-hidden={!isOpen}
     >
       <div
         className="modal rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark overflow-auto max-w-4xl w-full relative"
@@ -70,13 +82,13 @@ export const JobOrderModal = ({ onClose, isOpen }) => {
           </h3>
         </div>
 
-        {/* Modal content section */}
         <div className="modal-content overflow-y-auto max-h-[93vh] p-6">
-          <JobOrderForm 
-            onSubmit={handleFormSubmit} // Passing the submit handler to the form
-            isLoading={isPending} // Pass the loading state to the form for disabling the button
-            isError={isError} // Pass error state to show error messages in the form
-            error={error} // Pass the error message
+          <JobOrderForm
+            initialData={jobOrder}
+            onSubmit={handleFormSubmit}
+            isLoading={isPending}
+            isError={isError}
+            error={error}
           />
         </div>
       </div>

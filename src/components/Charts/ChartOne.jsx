@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import useJobOrders from '../../hooks/useJobOrders';
 
 const options = {
   legend: {
@@ -20,7 +21,6 @@ const options = {
       left: 0,
       opacity: 0.1,
     },
-
     toolbar: {
       show: false,
     },
@@ -47,10 +47,6 @@ const options = {
     width: [2, 2],
     curve: 'straight',
   },
-  // labels: {
-  //   show: false,
-  //   position: "top",
-  // },
   grid: {
     xaxis: {
       lines: {
@@ -83,18 +79,8 @@ const options = {
   xaxis: {
     type: 'category',
     categories: [
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ],
     axisBorder: {
       show: false,
@@ -115,19 +101,50 @@ const options = {
 };
 
 const ChartOne = () => {
-  const state = {
-    series: [
-      {
-        name: 'Job',
-        data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
-      },
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1);  // Start of the current year
+  const endOfYear = new Date(now.getFullYear(), 11, 31, 23, 59, 59); // End of the current year
+  
+  const finalParams = {
+    created_at_gte: startOfYear.toISOString(),
+    created_at_lte: endOfYear.toISOString(),
+  };
+  
+  const { data, isLoading, isError, error } = useJobOrders(finalParams);
+  const jobOrders = data?.data || [];
 
-      {
-        name: 'Cost',
-        data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
-      },
-    ],
-  }
+  const [seriesData, setSeriesData] = useState([
+    { name: 'Pending', data: [] },
+    { name: 'In Progress', data: [] },
+  ]);
+
+  useEffect(() => {
+    // Initialize arrays with 0 for all months (0-11)
+    const pendingData = Array(12).fill(0);
+    const inProgressData = Array(12).fill(0);
+
+    // Loop through each job order
+    jobOrders.forEach((order) => {
+      const createdMonth = new Date(order.createdAt).getMonth(); // Get month (0-11)
+
+      if (order.status === 'pending') {
+        pendingData[createdMonth] += 1; // Increment for the month
+      }
+      if (order.status === 'in-progress') {
+        inProgressData[createdMonth] += 1; // Increment for the month
+      }
+    });
+
+    // Log to check data
+    console.log('pendingData', pendingData);
+    console.log('inProgressData', inProgressData);
+
+    // Set series data for ApexCharts
+    setSeriesData([
+      { name: 'Pending', data: pendingData },
+      { name: 'In Progress', data: inProgressData },
+    ]);
+  }, [jobOrders]);
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
@@ -138,8 +155,8 @@ const ChartOne = () => {
               <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-primary"></span>
             </span>
             <div className="w-full">
-              <p className="font-semibold text-primary">Total Job</p>
-              <p className="text-sm font-medium">12.04.2022 - 12.05.2022</p>
+              <p className="font-semibold text-primary">Job Pending</p>
+              <p className="text-sm font-medium">2024</p>
             </div>
           </div>
           <div className="flex min-w-47.5">
@@ -147,8 +164,8 @@ const ChartOne = () => {
               <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-secondary"></span>
             </span>
             <div className="w-full">
-              <p className="font-semibold text-secondary">Total Cost</p>
-              <p className="text-sm font-medium">12.04.2022 - 12.05.2022</p>
+              <p className="font-semibold text-secondary">In Progress</p>
+              <p className="text-sm font-medium">2024</p>
             </div>
           </div>
         </div>
@@ -171,7 +188,7 @@ const ChartOne = () => {
         <div id="chartOne" className="-ml-5">
           <ReactApexChart
             options={options}
-            series={state.series}
+            series={seriesData}
             type="area"
             height={350}
           />

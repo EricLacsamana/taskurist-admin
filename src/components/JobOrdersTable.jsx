@@ -1,27 +1,20 @@
-const JobOrdersTable = ({ data = [] }) => {
-  // Function to map the job status to a more readable title
+import { useNavigate } from "react-router-dom";
+import { formatDate } from "../utils/helpers";
+
+const JobOrdersTable = ({ data = [] }) => { 
+  const navigate = useNavigate();
   const getStatusTitle = (status) => {
     const statusMap = {
       'pending': 'Pending',
       'in-progress': 'In Progress',
       'completed': 'Completed',
     };
-    return statusMap[status] || 'Unknown'; // Default to 'Unknown' if status is not recognized
+    return statusMap[status] || 'Unknown';
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleString('en-US', {
-      weekday: 'long', // e.g. "Monday"
-      year: 'numeric', // e.g. "2024"
-      month: 'long', // e.g. "December"
-      day: 'numeric', // e.g. "21"
-      hour: 'numeric', // e.g. "5 PM"
-      minute: 'numeric', // e.g. "58"
-      second: 'numeric', // e.g. "12"
-      hour12: true, // 12-hour clock with AM/PM
-    });
-  };
+  const handleViewJobOrder =(id) => {
+    navigate(`/job-orders/${id}`)
+  }
 
   return (
     <div
@@ -73,7 +66,7 @@ const JobOrdersTable = ({ data = [] }) => {
                         jobOrder.status === 'completed'
                           ? 'bg-success text-success'
                           : jobOrder.status === 'in-progress'
-                          ? 'bg-danger text-danger'
+                          ? 'bg-blue-300 text-blue-500'
                           : 'bg-warning text-warning'
                       }`}
                     >
@@ -82,7 +75,7 @@ const JobOrdersTable = ({ data = [] }) => {
                   </td>
                   <td className="py-5 px-4">
                     <div className="flex items-center space-x-3.5">
-                      <button className="hover:text-primary">
+                      <button className="hover:text-primary" onClick={()=> handleViewJobOrder(jobOrder._id)}>
                         <svg
                           className="fill-current"
                           width="18"
