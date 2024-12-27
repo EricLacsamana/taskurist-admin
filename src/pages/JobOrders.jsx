@@ -11,7 +11,7 @@ const JobOrders = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const [isOpen, setIsOpen] = useState(false);
-    const { data, isLoading, isError, error } = useJobOrders();
+    const { data } = useJobOrders();
     const jobOrders = data?.data;
 
     const handleOpenModal = () => setIsOpen(true);

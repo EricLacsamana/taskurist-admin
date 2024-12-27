@@ -6,6 +6,7 @@ import { loginUserApi } from '../../api/api';
 import SignInForm from '../../components/SignInForm';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../../store/authSlice';
+import { addToast } from '../../store/toastSlice';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const SignIn = () => {
       console.log('Sign-in successful:', data);
     },
     onError: (error) => {
-      console.error('Sign-in error:', error);
+      dispatch(addToast({ message: error.response?.data?.message, type: 'danger' }))
     },
   });
 
@@ -26,9 +27,7 @@ const SignIn = () => {
     mutation.mutate(data);
   };
 
-  if (mutation.isPending) return <div>Loading...</div>;
-  if (mutation.isError) return <div>Error fetching data</div>;
-  
+
   return (
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">

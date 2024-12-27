@@ -101,28 +101,21 @@ const options = {
 };
 
 const ChartOne = () => {
-  const now = new Date();
-  const startOfYear = new Date(now.getFullYear(), 0, 1);  // Start of the current year
-  const endOfYear = new Date(now.getFullYear(), 11, 31, 23, 59, 59); // End of the current year
-  
-  const finalParams = {
-    created_at_gte: startOfYear.toISOString(),
-    created_at_lte: endOfYear.toISOString(),
-  };
-  
-  const { data, isLoading, isError, error } = useJobOrders(finalParams);
+  const { data } = useJobOrders();
   const jobOrders = data?.data || [];
-
+  
   const [seriesData, setSeriesData] = useState([
     { name: 'Pending', data: [] },
     { name: 'In Progress', data: [] },
   ]);
+
 
   useEffect(() => {
     // Initialize arrays with 0 for all months (0-11)
     const pendingData = Array(12).fill(0);
     const inProgressData = Array(12).fill(0);
 
+  
     // Loop through each job order
     jobOrders.forEach((order) => {
       const createdMonth = new Date(order.createdAt).getMonth(); // Get month (0-11)
@@ -134,6 +127,7 @@ const ChartOne = () => {
         inProgressData[createdMonth] += 1; // Increment for the month
       }
     });
+  
 
     // Log to check data
     console.log('pendingData', pendingData);

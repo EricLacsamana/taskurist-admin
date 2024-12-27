@@ -8,6 +8,7 @@ import App from './App';
 import { persistor, store } from './store';
 import './css/style.css';
 import './css/satoshi.css';
+import Toast from './components/Toast';
 
 // import '/node_modules/jsvectormap/dist/css/jsvectormap.css';
 // import 'flatpickr/dist/flatpickr.min.css';
@@ -20,6 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
           <Router>
+            <Toast />
             <App />
           </Router>
         </QueryClientProvider>

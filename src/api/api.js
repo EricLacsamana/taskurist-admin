@@ -96,8 +96,11 @@ export const createJobOrder = async (payload) => {
   return response.data;
 };
 
-export const retrieveJobOrders = async (params) => {
-  return  api.get('/job-orders', params).then(thenCallbackRQ);
+export const retrieveJobOrders = async (ctx) => {
+  const { queryKey } = ctx;
+	const [, params] = queryKey;
+  console.log('params', params);
+  return api.get('/job-orders', { params }).then(thenCallbackRQ);
 };
 
 export const retrieveJobOrder = async (id) => {
@@ -106,7 +109,7 @@ export const retrieveJobOrder = async (id) => {
 
 export const updateJobOrder = async (data) => {
   const { id, ...payload } = data;
-  console.log('lagupar', data);
+
   return api.put(`/job-orders/${id}`, payload);
 };
 
@@ -152,12 +155,7 @@ export const retrieveUsers = async (ctx) => {
   const { queryKey } = ctx;
 	const [, params] = queryKey;
 
-  try {
-    const response = await api.get('/users',  { params });
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch users');
-  }
+  return api.get('/users',  { params }).then(thenCallbackRQ);
 };
 
 export const addUser = async (userData) => {

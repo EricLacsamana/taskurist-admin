@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import JobOrderForm from "../../pages/Form/JobOrderForm";
 import { createJobOrder, retrieveJobOrder, updateJobOrder } from "../../api/api";
+import { addToast } from "../../store/toastSlice";
+
 
 export const JobOrderModal = ({ jobOrderId, isOpen, onClose }) => {
 
   const queryClient = useQueryClient();
-    const { data = {} , refetch } = useQuery({
+  const dispatch = useDispatch();
+    const { data = {} } = useQuery({
       queryKey: ['job-order'],
       queryFn: ()=> retrieveJobOrder(jobOrderId),
       retry: 3,
@@ -16,11 +20,12 @@ export const JobOrderModal = ({ jobOrderId, isOpen, onClose }) => {
 
   const jobOrder =  jobOrderId ? data?.data : {};
 
-  const { mutate, isPending, isError, error, isSuccess } = useMutation({
+  const { mutate, isPending, isError, error } = useMutation({
     mutationFn: jobOrderId ?  updateJobOrder : createJobOrder,
     onSuccess: () => {
       queryClient.invalidateQueries(['job-orders']);
       onClose();
+      dispatch(addToast({ message:  jobOrderId ?  'Job Order updated' : 'Job Order added', type: 'success' }));
 
     },
     onError: (error) => {

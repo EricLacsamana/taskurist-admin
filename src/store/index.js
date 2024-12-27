@@ -1,20 +1,18 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import authReducer from './authSlice';
-// import tasksReducer from './tasksSlice';
-// import snackbarReducer from './snackbarSlice';
+import toastReducer from './toastSlice';
 import storage from './storage';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'tasks'],
+  whitelist: ['auth'],
 };
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  // tasks: tasksReducer,
-  // snackbar: snackbarReducer,
+  toasts: toastReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

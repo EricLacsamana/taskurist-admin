@@ -1,15 +1,10 @@
 import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import MultiSelect from '../../components/Forms/MultiSelect';
-import { useQuery } from '@tanstack/react-query';
-import { retrieveUsers } from '../../api/api';
+import useUsers from '../../hooks/useUsers';
 
 const JobOrderForm = ({ onSubmit = () => {}, initialData = {} }) => {
-  const { data } = useQuery({
-    queryKey: ['users-user', { role: 'user' }],
-    queryFn: retrieveUsers,
-    refetchOnWindowFocus: true,
-  });
+  const { data } =  useUsers({ role: 'user' });
 
   const availablePersonnel = data?.data.map((user) => ({
     value: user._id,
