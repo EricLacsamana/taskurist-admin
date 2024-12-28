@@ -3,6 +3,7 @@ import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import UsersTable from '../components/UsersTable';
 import FloatingActionButton from '../components/FloatingActionButton';
 import useUsers from '../hooks/useUsers';
+import { InviteUserModal } from '../components/Modals/InviteUserModal';
 
 
 const Users = () => {
@@ -10,8 +11,8 @@ const Users = () => {
     const handleOpenModal = () => setIsOpen(true);
     const handleCloseModal = () => setIsOpen(false)
         // Use useQuery with the new object syntax
-    const { data, isLoading, isError, error } = useUsers();
-    const users = data?.data;
+    const { data: users, isLoading, isError, error } = useUsers();
+
 
     console.log('users', users);
         
@@ -23,6 +24,7 @@ const Users = () => {
 
             <UsersTable data={users} />
             <FloatingActionButton onClick={handleOpenModal} />
+            <InviteUserModal isOpen={isOpen} onClose={handleCloseModal} />
         </div>
    
     </>

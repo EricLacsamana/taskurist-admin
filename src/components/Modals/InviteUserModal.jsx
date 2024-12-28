@@ -1,30 +1,21 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import JobOrderForm from "../../pages/Form/JobOrderForm";
-import { createJobOrder, retrieveJobOrder, updateJobOrder } from "../../api/api";
+import { useMutation } from '@tanstack/react-query';
+
+import { inviteUser } from "../../api/api";
 import { addToast } from "../../store/toastSlice";
+import UserInvitationForm from "../InviteUserForm";
 
 
-export const JobOrderModal = ({ jobOrderId, isOpen, onClose }) => {
-  const queryClient = useQueryClient();
-
+export const InviteUserModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
-    const { data: jobOrder = {} } = useQuery({
-      queryKey: ['job-order'],
-      queryFn: ()=> retrieveJobOrder(jobOrderId),
-      retry: 3,
-      refetchOnWindowFocus: true,
-      enabled: !!jobOrderId,
-  });
-
-
+  
   const { mutate, isPending, isError, error } = useMutation({
-    mutationFn: jobOrderId ?  updateJobOrder : createJobOrder,
+    mutationFn: inviteUser,
     onSuccess: () => {
-      queryClient.invalidateQueries(['job-orders']);
+   
       onClose();
-      dispatch(addToast({ message: jobOrderId ?  'Job Order updated' : 'Job Order added', type: 'success' }));
+      dispatch(addToast({ message: 'Invite Sent!', type: 'success' }));
 
     },
     onError: (error) => {
@@ -49,7 +40,6 @@ export const JobOrderModal = ({ jobOrderId, isOpen, onClose }) => {
 
 
   const handleFormSubmit = (formData) => {
-
     mutate(formData);
   };
 
@@ -82,17 +72,13 @@ export const JobOrderModal = ({ jobOrderId, isOpen, onClose }) => {
 
         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
           <h3 className="font-medium text-black dark:text-white" id="modalTitle">
-            Job Order Form
+            Invite User
           </h3>
         </div>
 
         <div className="modal-content overflow-y-auto max-h-[93vh] p-6">
-          <JobOrderForm
-            initialData={jobOrder}
+          <UserInvitationForm
             onSubmit={handleFormSubmit}
-            isLoading={isPending}
-            isError={isError}
-            error={error}
           />
         </div>
       </div>

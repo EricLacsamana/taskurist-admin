@@ -63,6 +63,10 @@ api.interceptors.response.use(
   }
 );
 
+export const inviteUser = async (payload) => {
+  return api.post('/auth/send-invite', payload).then(thenCallbackRQ);
+};
+
 export const createUser = async (data) => {
   const response = await api.post('/auth/register', data);
   return response.data;
@@ -91,37 +95,9 @@ export const logoutUserApi = async (refreshToken) => {
 };
 
 export const createJobOrder = async (payload) => {
-  console.log('lagups', payload);
   const response = await api.post('/job-orders', payload);
   return response.data;
 };
-
-export const retrieveJobOrders = async (ctx) => {
-  const { queryKey } = ctx;
-	const [, params] = queryKey;
-  console.log('params', params);
-  return api.get('/job-orders', { params }).then(thenCallbackRQ);
-};
-
-export const retrieveJobOrder = async (id) => {
-  return api.get(`/job-orders/${id}`).then(thenCallbackRQ);
-};
-
-export const updateJobOrder = async (data) => {
-  const { id, ...payload } = data;
-
-  return api.put(`/job-orders/${id}`, payload);
-};
-
-export const updateToggleCompleteJobOrder = async (id) => {
-  const response = await api.put(`/job-orders/${id}/complete`);
-  return response.data;
-};
-
-export const deleteJobOrder = async (id) => {
-  await api.delete(`/job-orders/${id}`);
-};
-
 
 export const register = async (userData) => {
     try {
@@ -142,14 +118,14 @@ export const login = async (credentials) => {
     }
 };
 
-export const getUserProfile = async () => {
-  try {
-    const response = await api.get('/users/me');
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch profile');
-  }
+export const retrieveUserProfile = async () => {
+  return api.get('/users/me').then(thenCallbackRQ);
 };
+
+export const updateUserProfile = async (payload) => {
+  return api.put('/users/me', payload).then(thenCallbackRQ);
+};
+
 
 export const retrieveUsers = async (ctx) => {
   const { queryKey } = ctx;
@@ -167,7 +143,6 @@ export const addUser = async (userData) => {
   }
 };
 
-
 export const deleteUser = async (id) => {
   try {
     const response = await api.delete(`/users/${id}`);
@@ -176,3 +151,31 @@ export const deleteUser = async (id) => {
     throw new Error(error.response?.data?.message || 'Failed to delete item');
   }
 };
+
+
+export const retrieveJobOrders = async (ctx) => {
+  const { queryKey } = ctx;
+	const [, params] = queryKey;
+
+  return api.get('/job-orders', { params }).then(thenCallbackRQ);
+};
+
+export const retrieveJobOrder = async (id) => {
+  return api.get(`/job-orders/${id}`).then(thenCallbackRQ);
+};
+
+export const updateJobOrder = async (data) => {
+  const { id, ...payload } = data;
+
+  return api.put(`/job-orders/${id}`, payload).then(thenCallbackRQ);
+};
+
+export const updateToggleCompleteJobOrder = async (id) => {
+  const response = await api.put(`/job-orders/${id}/complete`);
+  return response.data;
+};
+
+export const deleteJobOrder = async (id) => {
+  await api.delete(`/job-orders/${id}`);
+};
+

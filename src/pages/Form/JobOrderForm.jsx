@@ -2,11 +2,15 @@ import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import MultiSelect from '../../components/Forms/MultiSelect';
 import useUsers from '../../hooks/useUsers';
+import useProfile from '../../hooks/useProfile';
 
 const JobOrderForm = ({ onSubmit = () => {}, initialData = {} }) => {
-  const { data } =  useUsers({ role: 'user' });
+  const { data: user = {}} = useProfile();
+  const { role } = user;
 
-  const availablePersonnel = data?.data.map((user) => ({
+  const { data: users = [] } =  useUsers({ role: 'user' });
+
+  const availablePersonnel = users.map((user) => ({
     value: user._id,
     title: user.name,
   }));
@@ -31,7 +35,7 @@ const JobOrderForm = ({ onSubmit = () => {}, initialData = {} }) => {
       setValue('title', initialData.title || '');
       setValue('description', initialData.description || '');
       setValue('jobType', initialData.jobType || '');
-      setValue('assignedPersonnel', initialData.assignedPersonnel?.map((data) => data._id) || []);
+      // setValue('assignedPersonnel', initialData.assignedPersonnel?.map((data) => data._id) || []);
       setValue('assets', initialData.assets || []);
       setValue('serviceDetails', initialData.serviceDetails || '');
       setValue('status', initialData.status || 'pending');
@@ -139,6 +143,7 @@ const JobOrderForm = ({ onSubmit = () => {}, initialData = {} }) => {
       <div className="mb-4.5">
         <label className="mb-2.5 block text-black dark:text-white">Title</label>
         <input
+          disabled={role !== 'admin'}
           type="text"
           placeholder="Enter job order title"
           {...register('title', { required: 'Title is required' })}
@@ -151,6 +156,7 @@ const JobOrderForm = ({ onSubmit = () => {}, initialData = {} }) => {
       <div className="mb-4.5">
         <label className="mb-2.5 block text-black dark:text-white">Description</label>
         <textarea
+          disabled={role !== 'admin'}
           rows="4"
           placeholder="Enter job order description"
           {...register('description', { required: 'Description is required' })}
@@ -162,11 +168,15 @@ const JobOrderForm = ({ onSubmit = () => {}, initialData = {} }) => {
       {/* Job Type */}
       <div className="mb-4.5">
         <label className="mb-2.5 block text-black dark:text-white">Job Type</label>
-        <select {...register('jobType', { required: 'Job type is required' })} className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors.jobType ? 'border-red-500' : ''}`}>
-          <option value="">Select Job Type</option>
-          <option value="service">Service</option>
-          <option value="maintenance">Maintenance</option>
-          <option value="production">Production</option>
+        <select
+         {...register('jobType', { required: 'Job type is required' })}
+          disabled={role !== 'admin'}
+          className={`w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none ${errors.jobType ? 'border-red-500' : ''}`}
+          >
+            <option value="">Select Job Type</option>
+            <option value="service">Service</option>
+            <option value="maintenance">Maintenance</option>
+            <option value="production">Production</option>
         </select>
         {errors.jobType && <span className="text-red-500 text-sm">{errors.jobType.message}</span>}
       </div>
@@ -206,6 +216,7 @@ const JobOrderForm = ({ onSubmit = () => {}, initialData = {} }) => {
         <div className="mb-4.5">
           <label className="mb-2.5 block text-black dark:text-white">Repair Details</label>
           <textarea
+            disabled={role !== 'user'}
             rows="4"
             placeholder="Enter service details"
             {...register('serviceDetails', { required: 'Repair details are required for service jobs' })}

@@ -87,6 +87,15 @@ function App() {
           }
         />
         <Route
+          path="/job-orders/:id/delete"
+          element={
+            <>
+              <PageTitle title="Job Order Form | Taskurist - Tailwind CSS Admin Dashboard Template" />
+              <JobOrders />
+            </>
+          }
+        />
+        <Route
           path="/users"
           element={
             <>

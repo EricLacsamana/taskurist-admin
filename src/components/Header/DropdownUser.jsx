@@ -4,12 +4,14 @@ import ClickOutside from '../ClickOutside';
 import UserOne from '../../images/user/user-01.png';
 import { useSelector } from 'react-redux';
 import { logoutUserApi } from '../../api/api';
+import useProfile from '../../hooks/useProfile';
 
 const DropdownUser = () => {
   const navigate = useNavigate();
+  const { data: user = {}} = useProfile();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const refreshToken = useSelector((state) => state.auth.refreshToken);
-  const user = useSelector((state) => state.auth?.user);
+
 
   const handleLogout = async () => {
     await logoutUserApi(refreshToken);

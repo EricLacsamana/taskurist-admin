@@ -8,20 +8,18 @@ const Calendar = () => {
   
   const finalParams = {
     created_at_gte: startOfMonth.toISOString(),
-    schedules_startDate_gte: startOfMonth.toISOString(),  // Include start date filter
-    schedules_endDate_lte: endOfMonth.toISOString(),      // Include end date filter
+    schedules_startDate_gte: startOfMonth.toISOString(),
+    schedules_endDate_lte: endOfMonth.toISOString(),
   };
 
-  const { data } = useJobOrders(finalParams);
-  const jobOrders = data?.data;
+  const { data: jobOrders } = useJobOrders();
+ 
 
-  // Function to check if a schedule is on a particular day
   const isScheduleOnDate = (schedule, day) => {
     const scheduleStart = new Date(schedule.startDate);
     const scheduleEnd = new Date(schedule.endDate);
     const targetDay = new Date(now.getFullYear(), now.getMonth(), day);
 
-    // Check if the schedule starts or ends on the target day
     return scheduleStart <= targetDay && scheduleEnd >= targetDay;
   };
 

@@ -101,8 +101,8 @@ const options = {
 };
 
 const ChartOne = () => {
-  const { data } = useJobOrders();
-  const jobOrders = data?.data || [];
+  const { data: jobOrders = []} = useJobOrders();
+
   
   const [seriesData, setSeriesData] = useState([
     { name: 'Pending', data: [] },

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const RoleSelect = ({ value, options = [], onChange }) => {
+const RoleSelect = ({ value, onChange }) => {
   const [show, setShow] = useState(false);
-  const [selected, setSelected] = useState(value); // Track a single selected value
+
   const dropdownRef = useRef(null);
   const trigger = useRef(null);
 
@@ -11,31 +11,28 @@ const RoleSelect = ({ value, options = [], onChange }) => {
     { value: 'user', title: 'User' }
   ];
 
-
-  useEffect(() => {
-    setSelected(value);
-  }, [value]);
-
   const open = () => setShow(true);
-
   const close = () => setShow(false);
-
-  const select = (value) => {
-    setSelected(value);
-    onChange(value);
-    close();
-  };
 
   useEffect(() => {
     const clickHandler = ({ target }) => {
-      if (!dropdownRef.current || dropdownRef.current.contains(target) || trigger.current.contains(target)) {
+      if (
+        dropdownRef.current && dropdownRef.current.contains(target) || 
+        trigger.current && trigger.current.contains(target)
+      ) {
         return;
       }
       close();
     };
+    
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
   }, []);
+
+  const handleSelect = (selectedValue) => {
+    onChange(selectedValue); // Update the selected value through the onChange handler
+    close(); // Close dropdown after selection
+  };
 
   return (
     <div className="relative z-50">
@@ -47,10 +44,8 @@ const RoleSelect = ({ value, options = [], onChange }) => {
           className="flex items-center border rounded px-4 py-2 cursor-pointer"
         >
           <div className="flex w-full">
-
-            {selected === '' && <span className="text-gray-500">Select personnel</span>}
-
-            {selected && staticOptions.find((option) => option.value === selected)?.title}
+            {value === '' && <span className="text-gray-500">Select personnel</span>}
+            {value && staticOptions.find(option => option.value === value)?.title}
           </div>
           {/* Dropdown icon */}
           <button type="button" className="ml-2 p-1">
@@ -67,13 +62,11 @@ const RoleSelect = ({ value, options = [], onChange }) => {
             className="absolute top-full left-0 w-full mt-2 bg-white shadow-md rounded"
           >
             <div className="max-h-60 overflow-y-auto">
-              {staticOptions.map((option) => (
+              {staticOptions.map(option => (
                 <div
                   key={option.value}
-                  className={`p-2 cursor-pointer hover:bg-gray-200 ${selected === option.value
-                    ? 'bg-gray-300'
-                    : ''}`}
-                  onClick={() => select(option.value)}
+                  className={`p-2 cursor-pointer hover:bg-gray-200 ${value === option.value ? 'bg-gray-300' : ''}`}
+                  onClick={() => handleSelect(option.value)} // Pass value to onChange
                 >
                   {option.title}
                 </div>
