@@ -122,7 +122,17 @@ export const retrieveUserProfile = async () => {
   return api.get('/users/me').then(thenCallbackRQ);
 };
 
-export const updateUserProfile = async (payload) => {
+export const updateUserProfile = async (data) => {
+  const { password, ...userData } = data;
+
+  const payload = {
+      ...userData,
+  }
+
+  if (password) {
+    payload.password = password;
+  }
+  
   return api.put('/users/me', payload).then(thenCallbackRQ);
 };
 
