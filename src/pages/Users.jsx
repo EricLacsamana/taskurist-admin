@@ -12,9 +12,6 @@ const Users = () => {
     const handleCloseModal = () => setIsOpen(false)
         // Use useQuery with the new object syntax
     const { data: users, isLoading, isError, error } = useUsers();
-
-
-    console.log('users', users);
         
     return (
     <>

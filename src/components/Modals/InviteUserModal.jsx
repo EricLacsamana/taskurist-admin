@@ -13,10 +13,8 @@ export const InviteUserModal = ({ isOpen, onClose }) => {
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: inviteUser,
     onSuccess: () => {
-   
       onClose();
       dispatch(addToast({ message: 'Invite Sent!', type: 'success' }));
-
     },
     onError: (error) => {
       console.error(error);
@@ -78,6 +76,7 @@ export const InviteUserModal = ({ isOpen, onClose }) => {
 
         <div className="modal-content overflow-y-auto max-h-[93vh] p-6">
           <UserInvitationForm
+            isLoading={isPending}
             onSubmit={handleFormSubmit}
           />
         </div>

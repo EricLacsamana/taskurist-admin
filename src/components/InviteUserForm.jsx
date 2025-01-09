@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import RoleSelect from './RoleSelect';
 
-const InviteUserForm = ({ onSubmit = () => {} }) => {
+const InviteUserForm = ({ onSubmit = () => {}, isLoading = false }) => {
     const {
         control,
         register,
@@ -120,6 +120,7 @@ const InviteUserForm = ({ onSubmit = () => {} }) => {
 
             <div className="mb-5">
             <input
+                disabled={isLoading}
                 type="submit"
                 value="Invite"
                 className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
